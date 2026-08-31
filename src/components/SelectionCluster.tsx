@@ -16,7 +16,7 @@ export default function SelectionCluster({
   onMove,
 }: Props) {
   return (
-    <div className="cluster" data-testid="selection-cluster">
+    <div className="cluster" data-testid="selection-cluster" onClick={(e) => e.stopPropagation()}>
       <button type="button" aria-label="Arquivar" onClick={onArchive}>
         <BoxIcon />
       </button>

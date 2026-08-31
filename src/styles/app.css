@@ -150,6 +150,16 @@
 .note-main {
   min-width: 0;
   padding-top: 6px;
+  display: flex;
+  flex-direction: column;
+  min-height: 44px;
+}
+
+.note-text {
+  width: fit-content;
+  max-width: 100%;
+  align-self: flex-start;
+  cursor: text;
 }
 
 .note-title {
@@ -180,7 +190,16 @@
 }
 
 .note-empty {
-  min-height: 18px;
+  flex: 1;
+  min-height: 24px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.note-side-empty {
+  min-width: 12px;
+  min-height: 44px;
+  align-self: stretch;
 }
 
 .note-links {

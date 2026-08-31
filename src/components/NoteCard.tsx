@@ -1,4 +1,4 @@
-import type { PointerEvent as PE } from 'react';
+import { useRef, type PointerEvent as PE, type MouseEvent as ME } from 'react';
 import type { Note } from '../types';
 import { splitTitleBody } from '../lib/text';
 import { vibrate } from '../lib/haptic';
@@ -32,18 +32,30 @@ export default function NoteCard({
   onMove,
 }: Props) {
   const { title, body } = splitTitleBody(note.text);
-  const long = { current: 0 as number, did: false };
+  const long = useRef({ timer: 0, did: false });
 
   function startPress(_e: PE) {
-    long.did = false;
-    long.current = window.setTimeout(() => {
-      long.did = true;
+    long.current.did = false;
+    window.clearTimeout(long.current.timer);
+    long.current.timer = window.setTimeout(() => {
+      long.current.did = true;
       vibrate(10);
       if (!selected) onToggleSelect();
     }, 500);
   }
   function endPress() {
-    window.clearTimeout(long.current);
+    window.clearTimeout(long.current.timer);
+  }
+
+  function onCardClick(e: ME) {
+    if (long.current.did) return;
+    const t = e.target as HTMLElement;
+    if (t.closest('a, .note-radio, .note-thumb, .cluster, [data-testid="selection-cluster"]')) return;
+    if (t.closest('.note-text')) {
+      onOpenEditor();
+      return;
+    }
+    onToggleSelect();
   }
 
   return (
@@ -54,6 +66,7 @@ export default function NoteCard({
       onPointerUp={endPress}
       onPointerLeave={endPress}
       onPointerCancel={endPress}
+      onClick={onCardClick}
     >
       <button
         type="button"
@@ -61,30 +74,18 @@ export default function NoteCard({
         aria-label="Selecionar"
         onClick={(e) => {
           e.stopPropagation();
-          if (long.did) return;
+          if (long.current.did) return;
           onToggleSelect();
         }}
       >
         <span className="note-radio-dot" />
       </button>
       <div className="note-main">
-        <div
-          className="note-text"
-          onClick={() => {
-            if (long.did) return;
-            onOpenEditor();
-          }}
-        >
+        <div className="note-text">
           <h3 className="note-title">{title || ' '}</h3>
           {body.trim() ? <p className="note-body">{body.trim()}</p> : null}
         </div>
-        <div
-          className="note-empty"
-          onClick={() => {
-            if (long.did) return;
-            onToggleSelect();
-          }}
-        />
+        <div className="note-empty" />
         {note.links?.length ? (
           <div className="note-links">
             {note.links.map((l) => (
@@ -108,12 +109,12 @@ export default function NoteCard({
           alt={note.image.alt || ''}
           onClick={(e) => {
             e.stopPropagation();
-            if (long.did) return;
+            if (long.current.did) return;
             onOpenLightbox();
           }}
         />
       ) : (
-        <span />
+        <span className="note-side-empty" aria-hidden />
       )}
       {showCluster ? (
         <SelectionCluster
