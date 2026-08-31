@@ -1,0 +1,52 @@
+:root {
+  --bg: #1C1C1E;
+  --bg-elevated: #2C2C2E;
+  --card: #2C2C2E;
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #F2F2F7;
+  --muted: #8E8E93;
+  --blue: #0A84FF;
+  --blue-muted: rgba(10, 132, 255, 0.55);
+  --blue-wash: rgba(10, 132, 255, 0.18);
+  --danger: #FF453A;
+  --radius-card: 22px;
+  --target: 44px;
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, sans-serif;
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.28);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+html {
+  background: #1C1C1E;
+  color: var(--text);
+}
+
+html, body, #root {
+  margin: 0;
+  min-height: 100%;
+  min-height: 100dvh;
+  background: #1C1C1E;
+}
+
+body {
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  text-size-adjust: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button, input, textarea {
+  font-family: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+a {
+  color: var(--blue);
+}
