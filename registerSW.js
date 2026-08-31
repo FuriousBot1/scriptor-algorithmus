@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/scriptor-algorithmus/sw-share.js', { scope: '/scriptor-algorithmus/' })})}
